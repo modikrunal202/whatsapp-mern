@@ -1,0 +1,10 @@
+{
+    "workbench.editorAssociations": [
+
+    
+    ],
+    "emmet.syntaxProfiles": {
+        "javascript": "jsx" 
+    },
+    "emmet.triggerExpansionOnTab": true
+}
