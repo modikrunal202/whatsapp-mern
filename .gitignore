@@ -23,3 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 
 /.vscode
+
+node_modules
+.env
+package-lock.json
+dist
+.vscode
