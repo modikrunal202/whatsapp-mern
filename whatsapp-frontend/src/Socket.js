@@ -1,9 +1,17 @@
 import io from 'socket.io-client';
 let socket;
 
-export const initiateSocket = (room) => {
+export const initiateSocket = () => {
     socket = io('http://192.168.43.54:5000');
-    console.log(`Connecting socket...`);
+    console.log(`Connecting socket...`,socket);
+    // if (socket && room) socket.emit('join-room', room);
+}
+
+export const joinRoomSocket = (room) => {
+    console.log('room-----', room);
+    if (!socket) {
+        console.log('insdieeeee');
+    };
     if (socket && room) socket.emit('join-room', room);
 }
 
@@ -20,6 +28,7 @@ export const subscribeToChat = (cb) => {
     });
 }
 export const sendMessageEvent = (message) => {
+    console.log(`Connecting socket...`,socket);
     if (!socket) return (true);
     socket.emit("message-send", message)
 }

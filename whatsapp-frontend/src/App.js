@@ -5,7 +5,7 @@ import Chat from './Chat';
 import Sidebar from './Sidebar';
 import axios from './axios';
 import Login from "./Login";
-import { contactAddEvent } from "./Socket";
+import { contactAddEvent, initiateSocket } from "./Socket";
 
 function App() {
   // const [messages, setMessages] = useState([])
@@ -16,6 +16,7 @@ function App() {
     name: "",
     token: ""
   })
+  
   useEffect(() => {
     const authHeader = localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).token ? JSON.parse(localStorage.getItem("user")).token : null
     axios.get("/contacts", {
@@ -26,12 +27,15 @@ function App() {
       setContacts(response.data.data)
     })
   }, [])
+  useEffect(() => {
+    initiateSocket()
+  })
   useEffect(() => { 
     console.log('addd contact hook');
     contactAddEvent((err, newContact) => {
       setContacts([...contacts, newContact])
     })
-  }, [contacts])
+  })
   /*  useEffect(() => {
      const pusher = new Pusher('0d02b3d3f3602a770d27', {
        cluster: 'ap2'

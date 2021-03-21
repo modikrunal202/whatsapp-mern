@@ -23,6 +23,10 @@ class Socket {
             })  
         })
     }
+    public emitAddUserSocket = async(user) => {
+        console.log('user------', user);
+        io.emit("contact-add", user)
+    }
 }
 export default new Socket()
 // export default (io: Server) => {

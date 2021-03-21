@@ -7,7 +7,7 @@ import "./Chat.css"
 import ChatMessage from './ChatMessage'
 import axios from "./axios"
 import { useParams } from 'react-router-dom'
-import { initiateSocket, disconnectSocket, subscribeToChat, sendMessageEvent, receiveMessageEvent } from "./Socket"
+import { initiateSocket, disconnectSocket, subscribeToChat, sendMessageEvent, receiveMessageEvent, joinRoomSocket } from "./Socket"
 
 function Chat() {
     const [input, setInput] = useState('');
@@ -66,7 +66,7 @@ function Chat() {
 
     useEffect(() => {
         console.log('subscribeToChat hook calll', chatRoomId);
-        if (chatRoomId) initiateSocket(chatRoomId);
+        if (chatRoomId) joinRoomSocket(chatRoomId);
         subscribeToChat((err, data) => {
             if (err) return;
             console.log('here-----------');
@@ -76,9 +76,9 @@ function Chat() {
         //     console.log('here-data-----------', message);
         //     setMessages(oldMessages => [...oldMessages, message])
         // })
-        return () => {
-            disconnectSocket();
-        }
+        // return () => {
+        //     disconnectSocket();
+        // }
     }, [chatRoomId]);
     useEffect(() => {
         console.log('receiver hook call');
