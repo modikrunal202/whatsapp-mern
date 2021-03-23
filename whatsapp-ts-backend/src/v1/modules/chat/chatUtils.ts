@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ChatRoom } from "../../../model/chatRoomSchema";
 import { Message } from "../../../model/message";
-
+import { database } from "../../../database"
 export class ChatUtils {
     private chatRoom = new ChatRoom()
     public async sendMessage(message: any) {

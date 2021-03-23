@@ -5,7 +5,7 @@ import Chat from './Chat';
 import Sidebar from './Sidebar';
 import axios from './axios';
 import Login from "./Login";
-import { contactAddEvent, initiateSocket } from "./Socket";
+import { contactAddEvent, disconnectSocket, initiateSocket } from "./Socket";
 
 function App() {
   // const [messages, setMessages] = useState([])
@@ -16,40 +16,19 @@ function App() {
     name: "",
     token: ""
   })
-  
-  useEffect(() => {
-    const authHeader = localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).token ? JSON.parse(localStorage.getItem("user")).token : null
-    axios.get("/contacts", {
-      headers: {
-        authorization: authHeader
-      }
-    }).then(response => {
-      setContacts(response.data.data)
-    })
-  }, [])
   useEffect(() => {
     initiateSocket()
-  })
+
+    return(() => {
+      disconnectSocket()
+    })
+  }, [])
   useEffect(() => { 
     console.log('addd contact hook');
     contactAddEvent((err, newContact) => {
       setContacts([...contacts, newContact])
     })
   })
-  /*  useEffect(() => {
-     const pusher = new Pusher('0d02b3d3f3602a770d27', {
-       cluster: 'ap2'
-     });
-     const channel = pusher.subscribe('contacts');
-     channel.bind('inserted', (newContact) => {
-       setContacts([...contacts, newContact])
-     });
-     return () => {
-       channel.disconnect()
-       channel.unbind_all();
-       channel.unsubscribe();
-     }
-   }, [contacts]) */
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
     console.log('loggedInUser', loggedInUser);
@@ -80,6 +59,16 @@ function App() {
       })
     }
   }
+  useEffect(() => {
+    const authHeader = localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")).token ? JSON.parse(localStorage.getItem("user")).token : null
+    axios.get("/contacts", {
+      headers: {
+        authorization: authHeader
+      }
+    }).then(response => {
+      setContacts(response.data.data)
+    })
+  }, [currentUser])
   const responseGoogle = async (response) => {
     await axios.post("/auth/google-signin", {
       name: response.profileObj.name,
@@ -105,7 +94,7 @@ function App() {
       ) : (
         <div className="app__body">
           <Router>
-            <Sidebar users={contacts} currnetUser={currentUser} />
+            <Sidebar contacts={contacts} currnetUser={currentUser} />
             <Switch>
               <Route path="/rooms/:id">
                 <Chat />

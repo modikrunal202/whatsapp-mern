@@ -3,12 +3,12 @@ let socket;
 
 export const initiateSocket = () => {
     socket = io('http://192.168.43.54:5000');
-    console.log(`Connecting socket...`,socket);
+    console.log(`Connecting socket...`);
     // if (socket && room) socket.emit('join-room', room);
 }
 
 export const joinRoomSocket = (room) => {
-    console.log('room-----', room);
+    console.log('joinRoomSocket-----');
     if (!socket) {
         console.log('insdieeeee');
     };
@@ -18,6 +18,7 @@ export const joinRoomSocket = (room) => {
 export const disconnectSocket = () => {
     console.log('Disconnecting socket...');
     if (socket) socket.disconnect();
+    initiateSocket()
 }
 
 export const subscribeToChat = (cb) => {
@@ -28,7 +29,7 @@ export const subscribeToChat = (cb) => {
     });
 }
 export const sendMessageEvent = (message) => {
-    console.log(`Connecting socket...`,socket);
+    console.log(`sendMessageEvent call...`);
     if (!socket) return (true);
     socket.emit("message-send", message)
 }

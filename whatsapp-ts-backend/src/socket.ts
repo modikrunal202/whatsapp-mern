@@ -5,16 +5,16 @@ let io: any
 class Socket {
     public async init(sio: any) {
         io = sio;
-        io.on("connection", (socket) => {
+        io.on("connection", async (socket) => {
             console.log(`Client ${socket.id} connected`);
             socket.on("join-room", (chatRoomId) => {
                 socket.join(chatRoomId);
                 console.log('User has joined the room', chatRoomId);
                 socket.to(chatRoomId).emit("user-connected", chatRoomId);
-                socket.on('message-send', (message) => {
+                socket.on('message-send', async (message) => {
                     console.log("=====message", message);
-                    chatUtils.sendMessage(message)
-                    socket.to(chatRoomId).emit("message-received", message);
+                    const newMessage = await chatUtils.sendMessage(message)
+                    await this.emitSendMessageEvent(socket, newMessage, chatRoomId);
                 })
             })
             // socket.on("user-add", )
@@ -26,6 +26,10 @@ class Socket {
     public emitAddUserSocket = async(user) => {
         console.log('user------', user);
         io.emit("contact-add", user)
+    }
+    public emitSendMessageEvent = async(socket, message, chatRoomId) => {
+        console.log('message-received fired');
+        socket.to(chatRoomId).emit("message-received", message);
     }
 }
 export default new Socket()

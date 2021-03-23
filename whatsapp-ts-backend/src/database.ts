@@ -15,3 +15,5 @@ export class DB {
         });
     }
 }
+
+export const database = mongoose.connection;

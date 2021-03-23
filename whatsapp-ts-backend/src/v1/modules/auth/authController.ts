@@ -30,6 +30,8 @@ export class AuthController {
                 const token = await Jwt.getAuthToken({ _id: res.locals._user._id })
                 const result = await this.authUtils.generateLoginPayload(res.locals._user, token)
                 return res.status(200).json({ data: result })
+            } else {
+                return res.status(401).json({error: "Invalid Credentials"})
             }
         } catch (error) {
             console.log('errr', error);
