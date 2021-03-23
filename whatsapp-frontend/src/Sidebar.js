@@ -6,8 +6,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { Avatar, IconButton } from '@material-ui/core';
 import { SearchOutlined } from '@material-ui/icons';
 import SidebarChat from './SidebarChat';
-function Sidebar({users, currnetUser}) {
-    // console.log('users---------',users);
+function Sidebar({contacts, currnetUser}) {
+    // console.log('contacts---------',contacts);
     // console.log('currnetUser---currnetUser------',currnetUser);
 
     return (
@@ -35,8 +35,8 @@ function Sidebar({users, currnetUser}) {
             </div>
             <div className="sidebar__chats">
                 <SidebarChat addNewChat />
-                {users.map(user => (
-                    <SidebarChat user={user} key={user._id} id={user._id} />
+                {contacts.map(contact => (
+                    <SidebarChat contact={contact} key={contact._id} id={contact._id} />
                 ))}
             </div>
         </div>

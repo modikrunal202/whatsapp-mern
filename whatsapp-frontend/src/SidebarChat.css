@@ -8,9 +8,17 @@
     background-color: #ebebeb;
 }
 .sidebarChat__info > h2 {
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 8px;
+    color: #000;
+    font-weight: 400;
 }
 .sidebarChat__info {
     margin-left: 15px;
+}
+.sidebarLink {
+    text-decoration: none;
+}
+.sidebarChat__info > p {
+    color: rgb(0 0 0 / 60%);
 }

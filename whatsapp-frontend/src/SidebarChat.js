@@ -4,7 +4,7 @@ import "./SidebarChat.css";
 import axios from "./axios"
 import { Link } from 'react-router-dom';
 
-function SidebarChat({id, addNewChat, user }) {
+function SidebarChat({id, addNewChat, contact }) {
     const [seed, setSeed] = useState("")
     useEffect(() => {
         setSeed(Math.floor(Math.random() * 5000))
@@ -29,12 +29,12 @@ function SidebarChat({id, addNewChat, user }) {
         }
     }
     return !addNewChat ? (
-        <Link to={`/rooms/${id}`} >
+        <Link className="sidebarLink" to={`/rooms/${id}`} >
             <div className="sidebarChat">
                 <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
                 <div className="sidebarChat__info">
-                    <h2>{user.name}</h2>
-                    <p>last message in room</p>
+                    <h2>{contact.name}</h2>
+                    <p>{contact.email}</p>
                 </div>
             </div>
         </Link>

@@ -7,7 +7,7 @@ import "./Chat.css"
 import ChatMessage from './ChatMessage'
 import axios from "./axios"
 import { useParams } from 'react-router-dom'
-import { initiateSocket, disconnectSocket, subscribeToChat, sendMessageEvent, receiveMessageEvent } from "./Socket"
+import { subscribeToChat, sendMessageEvent, receiveMessageEvent, joinRoomSocket } from "./Socket"
 
 function Chat() {
     const [input, setInput] = useState('');
@@ -66,27 +66,21 @@ function Chat() {
 
     useEffect(() => {
         console.log('subscribeToChat hook calll', chatRoomId);
-        if (chatRoomId) initiateSocket(chatRoomId);
+        if (chatRoomId) joinRoomSocket(chatRoomId);
         subscribeToChat((err, data) => {
             if (err) return;
             console.log('here-----------');
             // setChat(oldChats => [data, ...oldChats])
         });
-        // receiveMessageEvent((err, message) => {
-        //     console.log('here-data-----------', message);
-        //     setMessages(oldMessages => [...oldMessages, message])
-        // })
-        return () => {
-            disconnectSocket();
-        }
     }, [chatRoomId]);
     useEffect(() => {
         console.log('receiver hook call');
         receiveMessageEvent((err, message) => {
-            console.log('here-data-----------', message);
             setMessages(oldMessages => [...oldMessages, message])
+            console.log('here-data-----------', messages);
         })
-    }, [chatRoomId])
+        
+    }, []) 
     useEffect(() => {
         scrollToBottom()
     }, [messages]);
@@ -99,6 +93,7 @@ function Chat() {
             chatRoomId
         }
         sendMessageEvent(message)
+        console.log('send msg event fired');
         message._id = 111
         setMessages(oldMessages => [...oldMessages, message])
         // await axios.post("/messages/send-message", {
